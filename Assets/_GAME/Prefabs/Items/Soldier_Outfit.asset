@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d68f6edb12b2ac14db3c729ea185623e, type: 3}
+  m_Name: Soldier_Outfit
+  m_EditorClassIdentifier: 
+  itemName: Soldier Outfit
+  sprite: {fileID: 944316169, guid: e7383536e60d29340ac3cd61720304d1, type: 3}
+  itemType: 0
+  value: 100
+  armor: 5
+  speedPenalty: 3
+  itemSlot: 1
