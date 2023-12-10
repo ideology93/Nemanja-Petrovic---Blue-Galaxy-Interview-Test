@@ -4,14 +4,21 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] float _moveSpeed = 5f;
     private GameObject _playerInventoryPanel;
+    public Inventory playerInventory;
     Animator _animator;
-    public bool _interacting;
-    public NPC npc;
+    public bool Interacting;
+    public NPC NPC;
+    public float PlayerGold = 150;
+
+
 
     private void Start()
     {
-        _playerInventoryPanel = GameManager.Instance.playerInventory;
+        playerInventory = GetComponent<Inventory>();
+        _playerInventoryPanel = InventoryManager.Instance.PlayerInventory_Panel;
+        InventoryManager.Instance.PlayerInventory = playerInventory;
         _animator = GetComponent<Animator>();
+        InventoryManager.Instance.goldTextPlayer.text = PlayerGold.ToString();
     }
     void Update()
     {
@@ -27,21 +34,20 @@ public class PlayerController : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.E))
         {
-            if (npc != null)
+            if (NPC != null)
             {
-                if (!_interacting)
+                if (!Interacting)
                 {
-                    _interacting = true;
-                    npc.ToggleShop(true);
-                    npc.ToggleInteractBox(false, true);
+                    Interacting = true;
+                    NPC.ToggleInteractButton(false, true);
+                    NPC.StartDialogue();
                 }
                 else
                 {
-                    _interacting = false;
-                    npc.ToggleShop(false);
-                    npc.ToggleInteractBox(true, false);
+                    Interacting = false;
+                    NPC.ToggleShop(false);
+                    NPC.ToggleInteractButton(true, false);
                 }
-
             }
         }
     }
@@ -49,24 +55,22 @@ public class PlayerController : MonoBehaviour
     {
         float horizontal = Input.GetAxisRaw("Horizontal");
         float vertical = Input.GetAxisRaw("Vertical");
-
         Vector3 movement = new Vector3(horizontal, vertical, 0f).normalized;
         transform.Translate(movement * _moveSpeed * Time.deltaTime);
-
-        // Set Animator parameters
         _animator.SetFloat("Horizontal", horizontal);
         _animator.SetFloat("Vertical", vertical);
-
     }
-    // public void Interact(NPC npc)
-    // {
-    //     if (npc == null) return;
+    public void EarnGold(float amount)
+    {
+        PlayerGold += amount;
+        InventoryManager.Instance.goldTextPlayer.text = PlayerGold.ToString();
+        NPC.SpendGold(amount);
+    }
 
-    //     npc.OpenShop();
-    //     npc.Interact();
-
-    // }
-
-
-
+    public void SpendGold(float amount)
+    {
+        PlayerGold -= amount;
+        InventoryManager.Instance.goldTextPlayer.text = PlayerGold.ToString();
+        NPC.EarnGold(amount);
+    }
 }

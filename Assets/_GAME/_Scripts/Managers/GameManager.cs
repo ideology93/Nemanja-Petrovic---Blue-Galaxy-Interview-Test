@@ -5,8 +5,8 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public PlayerController playerController;
+    public NPC CurrentNPC;
     public CameraFollow cameraController;
-    public GameObject playerInventory, npcInventory;
     private static GameManager _instance;
     public static GameManager Instance
     {
@@ -23,14 +23,7 @@ public class GameManager : MonoBehaviour
         Application.targetFrameRate = 60;
         _instance = this;
     }
-    private void Start()
-    {
 
-    }
-    public void Reset()
-    {
-
-    }
 
 
 

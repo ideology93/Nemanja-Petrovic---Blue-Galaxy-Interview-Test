@@ -5,10 +5,12 @@ using System.Collections.Generic;
 
 public class Inventory : MonoBehaviour
 {
+
     public List<ItemScriptableObject> inventory = new List<ItemScriptableObject>();
     public GameObject inventoryPanel;
     public GameObject inventorySlotPrefab;
     public ItemDescription itemDescription;
+    public int Gold;
 
     void Start()
     {
@@ -22,9 +24,17 @@ public class Inventory : MonoBehaviour
         {
             // Add the item to the inventory
             inventory.Add(item);
-
         }
-
+        UpdateInventoryUI();
+    }
+    public void RemoveFromInventory(ItemScriptableObject item)
+    {
+        if (inventory.Contains(item))
+        {
+            // Remove the item from the inventory
+            itemDescription.ClearDescription();
+            inventory.Remove(item);
+        }
         UpdateInventoryUI();
     }
 
@@ -39,10 +49,13 @@ public class Inventory : MonoBehaviour
         // Create UI for each inventory item
         foreach (ItemScriptableObject item in inventory)
         {
+
             GameObject slot = Instantiate(inventorySlotPrefab, inventoryPanel.transform);
-            inventorySlotPrefab.GetComponent<InventoryItem>().itemDescription = itemDescription;
+            InventoryItem inventoryItem = slot.GetComponent<InventoryItem>();
+            inventoryItem.ownerInventory = this;
+            inventoryItem.item = item;
+            inventoryItem.itemDescription = itemDescription;
             Image iconImage = slot.transform.Find("ItemIcon").GetComponent<Image>();
-            slot.GetComponent<InventoryItem>().item = item;
             iconImage.sprite = item.sprite;
         }
     }

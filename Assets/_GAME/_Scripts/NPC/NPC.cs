@@ -5,20 +5,35 @@ using UnityEngine;
 public class NPC : MonoBehaviour
 {
     public PlayerController playerController;
+    public Inventory inventory;
+    [SerializeField] DialogueBox dialogueBox;
+    [SerializeField] string dialogueText;
     private GameObject npcInventory;
     public bool interactable, interacting;
-    public GameObject interactBox;
+    public GameObject interactBox, dialogueBoxText;
+    public float NPCGold = 50;
+
 
     private void Start()
     {
+        inventory = GetComponent<Inventory>();
         interactable = true;
         playerController = GameManager.Instance.playerController;
-        npcInventory = GameManager.Instance.npcInventory;
+        npcInventory = InventoryManager.Instance.NPCInventory_Panel;
+        InventoryManager.Instance.goldTextNPC.text = NPCGold.ToString();
     }
-    public void ToggleInteractBox(bool active, bool interacting)
+
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        interactBox.SetActive(active);
-        interacting = this.interacting;
+        if (other.CompareTag("Player"))
+        {
+            GameManager.Instance.CurrentNPC = this;
+            interacting = true;
+            ToggleInteractButton(true, false);
+            playerController.NPC = this;
+            dialogueBox.npc = this;
+            InventoryManager.Instance.NPCInventory = inventory;
+        }
     }
     private void OnTriggerExit2D(Collider2D other)
     {
@@ -26,25 +41,36 @@ public class NPC : MonoBehaviour
         {
             interacting = false;
             ToggleShop(false);
-            ToggleInteractBox(false, false);
-            playerController.npc = null;
-            playerController._interacting = false;
+            ToggleInteractButton(false, false);
+            playerController.NPC = null;
+            playerController.Interacting = false;
+            InventoryManager.Instance.NPCInventory = null;
         }
     }
-    private void OnTriggerEnter2D(Collider2D other)
+    public void ToggleInteractButton(bool active, bool _interacting)
     {
-        if (other.CompareTag("Player"))
-        {
-            interacting = true;
-            ToggleInteractBox(true, false);
-            playerController.npc = this;
+        interactBox.SetActive(active);
+        interacting = _interacting;
+    }
 
-        }
+    public void StartDialogue()
+    {
+        StartCoroutine(dialogueBox.WriteDialogue(dialogueText));
     }
     public void ToggleShop(bool active)
     {
         npcInventory.SetActive(active);
     }
+    public void EarnGold(float amount)
+    {
+        NPCGold += amount;
+        InventoryManager.Instance.goldTextNPC.text = NPCGold.ToString();
+    }
 
+    public void SpendGold(float amount)
+    {
+        NPCGold -= amount;
+        InventoryManager.Instance.goldTextNPC.text = NPCGold.ToString();
+    }
 
 }
