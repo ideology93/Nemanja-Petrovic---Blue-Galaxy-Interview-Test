@@ -2,38 +2,71 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] float moveSpeed = 5f;
-    Animator animator;
+    [SerializeField] float _moveSpeed = 5f;
+    private GameObject _playerInventoryPanel;
+    Animator _animator;
+    public bool _interacting;
+    public NPC npc;
 
     private void Start()
     {
-
-        animator = GetComponent<Animator>();
+        _playerInventoryPanel = GameManager.Instance.playerInventory;
+        _animator = GetComponent<Animator>();
     }
     void Update()
     {
-        MovePlayer();
+        HandleMovement();
+        HandleInput();
     }
 
-    void MovePlayer()
+    private void HandleInput()
+    {
+        if (Input.GetKeyDown(KeyCode.B))
+        {
+            _playerInventoryPanel.SetActive(!_playerInventoryPanel.activeSelf);
+        }
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            if (npc != null)
+            {
+                if (!_interacting)
+                {
+                    _interacting = true;
+                    npc.ToggleShop(true);
+                    npc.ToggleInteractBox(false, true);
+                }
+                else
+                {
+                    _interacting = false;
+                    npc.ToggleShop(false);
+                    npc.ToggleInteractBox(true, false);
+                }
+
+            }
+        }
+    }
+    void HandleMovement()
     {
         float horizontal = Input.GetAxisRaw("Horizontal");
         float vertical = Input.GetAxisRaw("Vertical");
 
         Vector3 movement = new Vector3(horizontal, vertical, 0f).normalized;
-        transform.Translate(movement * moveSpeed * Time.deltaTime);
+        transform.Translate(movement * _moveSpeed * Time.deltaTime);
 
         // Set Animator parameters
-        animator.SetFloat("Horizontal", horizontal);
-        animator.SetFloat("Vertical", vertical);
+        _animator.SetFloat("Horizontal", horizontal);
+        _animator.SetFloat("Vertical", vertical);
 
     }
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.CompareTag("Shopkeeper"))
-        {
-            Debug.Log("HELLYEA");
-        }
-    }
+    // public void Interact(NPC npc)
+    // {
+    //     if (npc == null) return;
+
+    //     npc.OpenShop();
+    //     npc.Interact();
+
+    // }
+
+
 
 }
