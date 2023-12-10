@@ -2,27 +2,27 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] float _moveSpeed = 5f;
-    private GameObject _playerInventoryPanel;
+
+    public float MoveSpeed = 0f;
+    public float StartMoveSpeed = 5f;
+    public GameObject PlayerInventoryPanel;
     public bool IsInShop;
     public CharacterScriptableObject characterScriptableObject;
     public Inventory playerInventory;
     [SerializeField] Animator _animator;
     public bool Interacting;
     public NPC NPC;
-    public float PlayerGold = 150;
+    public float PlayerGold = 200;
     public PlayerEquipment playerEquipment;
-   
-
-
 
     private void Start()
     {
+        MoveSpeed = StartMoveSpeed;
         playerInventory = GetComponent<Inventory>();
         playerEquipment = GetComponent<PlayerEquipment>();
         // playerEquipment.outfit = currentOutfit;
         // playerEquipment.outfitImage.sprite = currentOutfit.sprite;
-        _playerInventoryPanel = InventoryManager.Instance.PlayerInventory_Panel;
+        PlayerInventoryPanel = InventoryManager.Instance.PlayerInventory_Panel;
         InventoryManager.Instance.PlayerInventory = playerInventory;
         InventoryManager.Instance.goldTextPlayer.text = PlayerGold.ToString();
     }
@@ -36,14 +36,16 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.B))
         {
-            _playerInventoryPanel.SetActive(!_playerInventoryPanel.activeSelf);
+            PlayerInventoryPanel.SetActive(!PlayerInventoryPanel.activeSelf);
         }
         if (Input.GetKeyDown(KeyCode.E))
         {
             if (NPC != null)
             {
+                AudioManager.Instance.PlaySound(0);
                 if (!Interacting)
                 {
+
                     Interacting = true;
                     NPC.ToggleInteractButton(false, true);
                     NPC.StartDialogue();
@@ -56,13 +58,17 @@ public class PlayerController : MonoBehaviour
                 }
             }
         }
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            GameManager.Instance.menu.SetActive(!GameManager.Instance.menu.activeSelf);
+        }
     }
     void HandleMovement()
     {
         float horizontal = Input.GetAxisRaw("Horizontal");
         float vertical = Input.GetAxisRaw("Vertical");
         Vector3 movement = new Vector3(horizontal, vertical, 0f).normalized;
-        transform.Translate(movement * _moveSpeed * Time.deltaTime);
+        transform.Translate(movement * MoveSpeed * Time.deltaTime);
         _animator.SetFloat("Horizontal", horizontal);
         _animator.SetFloat("Vertical", vertical);
     }

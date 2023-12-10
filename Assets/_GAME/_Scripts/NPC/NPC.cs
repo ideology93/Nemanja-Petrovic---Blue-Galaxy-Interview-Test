@@ -31,6 +31,7 @@ public class NPC : MonoBehaviour
             interacting = true;
             ToggleInteractButton(true, false);
             playerController.NPC = this;
+
             dialogueBox.npc = this;
             InventoryManager.Instance.NPCInventory = inventory;
         }
@@ -42,6 +43,7 @@ public class NPC : MonoBehaviour
             interacting = false;
             ToggleShop(false);
             ToggleInteractButton(false, false);
+            GameManager.Instance.playerController.PlayerInventoryPanel.SetActive(false);
             playerController.NPC = null;
             playerController.Interacting = false;
             InventoryManager.Instance.NPCInventory = null;

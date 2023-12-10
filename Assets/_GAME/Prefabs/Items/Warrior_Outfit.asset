@@ -17,6 +17,6 @@ MonoBehaviour:
   itemType: 0
   value: 100
   armor: 3
-  speedPenalty: 1.5
+  speedPenalty: 2
   itemSlot: 1
   OutfitID: 2

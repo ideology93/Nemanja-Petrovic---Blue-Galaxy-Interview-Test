@@ -40,6 +40,7 @@ public class DialogueBox : MonoBehaviour
     {
         if (answer)
         {
+            GameManager.Instance.playerController.PlayerInventoryPanel.SetActive(true);
             npc.ToggleInteractButton(false, true);
             npc.ToggleShop(true);
             dialogueBox.SetActive(false);

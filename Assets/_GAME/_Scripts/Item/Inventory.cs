@@ -10,14 +10,11 @@ public class Inventory : MonoBehaviour
     public GameObject inventoryPanel;
     public GameObject inventorySlotPrefab;
     public ItemDescription itemDescription;
-    
-    public int Gold;
+
 
     void Start()
     {
-        if(Gold < 100) Gold=150;
-
-        UpdateInventoryUI();
+         UpdateInventoryUI();
     }
 
     public void AddToInventory(ItemScriptableObject item)
@@ -47,8 +44,7 @@ public class Inventory : MonoBehaviour
         {
             Destroy(child.gameObject);
         }
-
-        // Create UI for each inventory item
+        //Regenerate UI
         foreach (ItemScriptableObject item in inventory)
         {
 

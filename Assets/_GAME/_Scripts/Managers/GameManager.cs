@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    public GameObject menu;
     public PlayerController playerController;
     public NPC CurrentNPC;
     public CameraFollow cameraController;
@@ -22,6 +23,10 @@ public class GameManager : MonoBehaviour
         Debug.Log("Framerate set");
         Application.targetFrameRate = 60;
         _instance = this;
+    }
+    public void Quit()
+    {
+        Application.Quit();
     }
 
 
