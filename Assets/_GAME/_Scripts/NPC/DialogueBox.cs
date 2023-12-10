@@ -1,7 +1,6 @@
 using UnityEngine;
 using TMPro;
 using System.Collections;
-using UnityEngine.UI;
 public class DialogueBox : MonoBehaviour
 {
     public NPC npc;
@@ -12,8 +11,6 @@ public class DialogueBox : MonoBehaviour
     private void Start()
     {
         dialogueBox = this.gameObject;
-        // yesButton.GetComponent<Button>().onClick.AddListener(() => Answer(true));
-        // noButton.GetComponent<Button>().onClick.AddListener(() => Answer(false));
     }
     public IEnumerator WriteDialogue(string dialogue)
     {

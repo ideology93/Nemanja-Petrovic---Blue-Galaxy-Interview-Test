@@ -2,17 +2,17 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-
+    [Header("Character Stats")]
     public float MoveSpeed = 0f;
     public float StartMoveSpeed = 5f;
+    public float PlayerGold = 200;
+    [Header("References")]
+    [SerializeField] Animator _animator;
     public GameObject PlayerInventoryPanel;
-    public bool IsInShop;
     public CharacterScriptableObject characterScriptableObject;
     public Inventory playerInventory;
-    [SerializeField] Animator _animator;
     public bool Interacting;
     public NPC NPC;
-    public float PlayerGold = 200;
     public PlayerEquipment playerEquipment;
 
     private void Start()
@@ -20,8 +20,6 @@ public class PlayerController : MonoBehaviour
         MoveSpeed = StartMoveSpeed;
         playerInventory = GetComponent<Inventory>();
         playerEquipment = GetComponent<PlayerEquipment>();
-        // playerEquipment.outfit = currentOutfit;
-        // playerEquipment.outfitImage.sprite = currentOutfit.sprite;
         PlayerInventoryPanel = InventoryManager.Instance.PlayerInventory_Panel;
         InventoryManager.Instance.PlayerInventory = playerInventory;
         InventoryManager.Instance.goldTextPlayer.text = PlayerGold.ToString();

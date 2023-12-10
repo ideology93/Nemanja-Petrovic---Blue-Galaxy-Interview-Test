@@ -1,6 +1,4 @@
-// InventoryItem.cs
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
