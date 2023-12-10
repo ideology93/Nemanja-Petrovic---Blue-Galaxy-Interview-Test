@@ -16,4 +16,7 @@ MonoBehaviour:
   sprite: {fileID: 693943259, guid: 71dbe4ee5efc57d40be9461c095c8f4f, type: 3}
   itemType: 0
   value: 100
+  armor: 0
+  speedPenalty: 0
   itemSlot: 1
+  OutfitID: 4

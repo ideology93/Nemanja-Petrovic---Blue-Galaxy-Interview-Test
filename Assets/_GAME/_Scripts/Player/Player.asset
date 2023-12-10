@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterName: Nemanja
   bodyArmorSlot:
-    equippedItem: {fileID: 11400000, guid: c10d78e85123a0043b52894f7f72764f, type: 2}
+    equippedItem: {fileID: 11400000, guid: ec926798c8af6c543ac6d70ad2e85d13, type: 2}
   characterInfo:
     characterType: 0
     characterHostility: 0

@@ -4,16 +4,8 @@ using UnityEngine;
 public class CharacterScriptableObject : ScriptableObject
 {
     public string characterName;
-
-    public EquipmentSlot bodyArmorSlot;
-
     public CharacterInfo characterInfo;
-}
-
-[System.Serializable]
-public class EquipmentSlot
-{
-    public ItemScriptableObject equippedItem;
+    public ItemScriptableObject outfit;
 }
 
 [System.Serializable]

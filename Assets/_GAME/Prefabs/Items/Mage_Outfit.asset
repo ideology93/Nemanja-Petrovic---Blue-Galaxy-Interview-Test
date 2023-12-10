@@ -19,3 +19,4 @@ MonoBehaviour:
   armor: 1
   speedPenalty: 0
   itemSlot: 1
+  OutfitID: 3

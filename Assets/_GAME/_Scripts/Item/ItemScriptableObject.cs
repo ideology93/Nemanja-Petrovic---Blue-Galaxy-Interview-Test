@@ -7,7 +7,6 @@ using UnityEngine;
 public class ItemScriptableObject : ScriptableObject
 
 {
-
     public string itemName;
     public Sprite sprite;
     public ItemType itemType;
@@ -15,6 +14,7 @@ public class ItemScriptableObject : ScriptableObject
     public int armor;
     public float speedPenalty;
     public ItemSlot itemSlot;
+    public int OutfitID;
 }
 public enum ItemType
 {

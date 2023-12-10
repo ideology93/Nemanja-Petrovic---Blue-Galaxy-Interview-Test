@@ -6,6 +6,7 @@ using UnityEngine.EventSystems;
 
 public class InventoryItem : MonoBehaviour, IPointerClickHandler
 {
+    public bool isEquipped;
     public ItemScriptableObject item;
     public ItemDescription itemDescription;
     public Inventory ownerInventory;
@@ -14,24 +15,30 @@ public class InventoryItem : MonoBehaviour, IPointerClickHandler
     public void OnPointerEnter()
     {
         itemDescription.SetDescription(item.itemName, item.itemSlot.ToString(), item.armor, item.speedPenalty, item.value);
+        hasBeenClicked = false;
     }
 
     public void OnPointerExit()
     {
         itemDescription.ClearDescription();
+        hasBeenClicked = false;
     }
     public void OnPointerClick(PointerEventData eventData)
     {
         if (eventData.button == PointerEventData.InputButton.Right && !hasBeenClicked)
         {
-            if (ownerInventory.CompareTag("Player"))
+            if (GameManager.Instance.playerController.Interacting)
             {
-                SellItem();
+                if (ownerInventory.CompareTag("Player"))
+                {
+                    SellItem();
+                }
+                else
+                {
+                    BuyItem();
+                }
             }
-            else
-            {
-                BuyItem();
-            }
+            else EquipOrUnequipItem();
         }
         hasBeenClicked = true;
     }
@@ -71,9 +78,12 @@ public class InventoryItem : MonoBehaviour, IPointerClickHandler
 
     private void SellItem()
     {
+        Debug.Log("Selling");
         Inventory npcInventory = InventoryManager.Instance.NPCInventory;
+        Debug.Log("NPC Inventory " + npcInventory.name);
         if (npcInventory != null)
         {
+            if (item.OutfitID == 0 || IsEquipped()) return;
             Debug.Log("Item Sold");
             ownerInventory.RemoveFromInventory(item);
             npcInventory.AddToInventory(item);
@@ -85,4 +95,88 @@ public class InventoryItem : MonoBehaviour, IPointerClickHandler
         }
     }
 
+    private void EquipOrUnequipItem()
+    {
+        // Assuming you have a reference to the player's equipment
+        PlayerEquipment playerEquipment = GameManager.Instance.playerController.playerEquipment;
+
+        if (playerEquipment.outfit.OutfitID == 0)
+        {
+            // Equip the item
+            EquipItem();
+        }
+        else
+        {
+            // Unequip the item
+            UnequipItem();
+        }
+    }
+
+    private void EquipItem()
+    {
+
+        Debug.Log("Clicking item");
+        // Assuming you have a reference to the player's equipment
+        PlayerEquipment playerEquipment = GameManager.Instance.playerController.playerEquipment;
+
+        // Check if the item is the default outfit
+        if (item.OutfitID == 0)
+        {
+            // Equip the default outfit without adding it to the inventory
+            playerEquipment.EquipItem(item, this);
+        }
+        else
+        {
+            // Check if the player already has an outfit equipped
+            if (playerEquipment.outfit != null)
+            {
+                // Unequip the current outfit
+                UnequipCurrentOutfit(playerEquipment.outfit);
+            }
+
+            // Equip the new outfit
+            playerEquipment.EquipItem(item, this);
+            // Remove the item from the player's inventory
+            ownerInventory.RemoveFromInventory(item);
+        }
+    }
+
+    private void UnequipItem()
+    {
+        // Assuming you have a reference to the player's equipment
+        PlayerEquipment playerEquipment = GameManager.Instance.playerController.playerEquipment;
+
+        // Check if the item is the default outfit
+        if (item.OutfitID == 0)
+        {
+            Debug.Log("Default outfit so not unequipping");
+            // Unequipping the default outfit, do nothing
+        }
+        else
+        {
+            Debug.Log("Unequipping the item");
+            // Unequip the item
+            UnequipCurrentOutfit(item);
+            // Add the unequipped item back to the player's inventory
+            Debug.Log("Owner" + ownerInventory.name);
+            ownerInventory.AddToInventory(item);
+        }
+    }
+
+    private void UnequipCurrentOutfit(ItemScriptableObject currentItem)
+    {
+        // Assuming you have a reference to the player's equipment
+        PlayerEquipment playerEquipment = GameManager.Instance.playerController.playerEquipment;
+
+        // Unequip the current outfit
+        playerEquipment.UnequipItem(currentItem);
+    }
+    private bool IsEquipped()
+    {
+        // Assuming you have a reference to the player's equipment
+        PlayerEquipment playerEquipment = GameManager.Instance.playerController.playerEquipment;
+
+        // Check if the item is the currently equipped outfit
+        return playerEquipment.outfit == item;
+    }
 }

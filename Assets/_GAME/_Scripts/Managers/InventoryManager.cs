@@ -8,6 +8,8 @@ public class InventoryManager : MonoBehaviour
     public Inventory NPCInventory;
     public GameObject PlayerInventory_Panel, NPCInventory_Panel;
     public TextMeshProUGUI goldTextPlayer, goldTextNPC;
+    public PlayerEquipment playerEquipment;
+    
 
     public static InventoryManager Instance
     {

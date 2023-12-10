@@ -10,11 +10,13 @@ public class Inventory : MonoBehaviour
     public GameObject inventoryPanel;
     public GameObject inventorySlotPrefab;
     public ItemDescription itemDescription;
+    
     public int Gold;
 
     void Start()
     {
-        // Initialize inventory and UI
+        if(Gold < 100) Gold=150;
+
         UpdateInventoryUI();
     }
 

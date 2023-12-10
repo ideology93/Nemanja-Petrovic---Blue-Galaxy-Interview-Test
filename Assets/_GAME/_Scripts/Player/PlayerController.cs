@@ -4,20 +4,26 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] float _moveSpeed = 5f;
     private GameObject _playerInventoryPanel;
+    public bool IsInShop;
+    public CharacterScriptableObject characterScriptableObject;
     public Inventory playerInventory;
-    Animator _animator;
+    [SerializeField] Animator _animator;
     public bool Interacting;
     public NPC NPC;
     public float PlayerGold = 150;
+    public PlayerEquipment playerEquipment;
+   
 
 
 
     private void Start()
     {
         playerInventory = GetComponent<Inventory>();
+        playerEquipment = GetComponent<PlayerEquipment>();
+        // playerEquipment.outfit = currentOutfit;
+        // playerEquipment.outfitImage.sprite = currentOutfit.sprite;
         _playerInventoryPanel = InventoryManager.Instance.PlayerInventory_Panel;
         InventoryManager.Instance.PlayerInventory = playerInventory;
-        _animator = GetComponent<Animator>();
         InventoryManager.Instance.goldTextPlayer.text = PlayerGold.ToString();
     }
     void Update()
@@ -73,4 +79,11 @@ public class PlayerController : MonoBehaviour
         InventoryManager.Instance.goldTextPlayer.text = PlayerGold.ToString();
         NPC.EarnGold(amount);
     }
+    public void EquipItem(ItemScriptableObject item)
+    {
+        playerEquipment.outfit = item;
+        playerEquipment.outfitImage.sprite = item.sprite;
+        _animator.SetInteger("Outfit", item.OutfitID);
+    }
+
 }
